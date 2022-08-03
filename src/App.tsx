@@ -1,26 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Header} from "./components/Header/Header";
+import {Navbar} from "./components/Navbar/Navbar";
+import {Dialogs} from "./components/Dialogs/Dialogs";
+import {Routes, Route} from 'react-router-dom';
+import {ActionsType, RootStateType, StoreType} from "./redux/store";
+import {Profile} from "./components/Profile/Profile";
+import {store} from "./redux/redux-store";
+import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+type AppPropsType = {
+    store: StoreType
+}
+
+export function App(props: AppPropsType) {
+        return (
+        < div className='app_wrapper'>
+            < Header/>
+            < Navbar/>
+            <div className='app_wrapper_content'>
+                <Routes>
+                    <Route
+                        path="/dialogs/*"
+                        element={<DialogsContainer
+                            // store={props.store}
+                                          // messagesPageData={props.state.messagesPageData}
+                                          // dispatch={props.dispatch}
+                        />}
+                    />
+                    <Route path="/profile/*"
+                           element={<Profile/>}/>
+                </Routes>
+            </div>
+        </div>
+
+    )
 }
 
 export default App;
