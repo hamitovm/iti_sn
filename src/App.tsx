@@ -2,18 +2,11 @@ import React from 'react';
 import './App.css';
 import {Header} from "./components/Header/Header";
 import {Navbar} from "./components/Navbar/Navbar";
-import {Dialogs} from "./components/Dialogs/Dialogs";
 import {Routes, Route} from 'react-router-dom';
-import {ActionsType, RootStateType, StoreType} from "./redux/store";
 import {Profile} from "./components/Profile/Profile";
-import {store} from "./redux/redux-store";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
 
-type AppPropsType = {
-    store: StoreType
-}
-
-export function App(props: AppPropsType) {
+export function App() {
         return (
         < div className='app_wrapper'>
             < Header/>
