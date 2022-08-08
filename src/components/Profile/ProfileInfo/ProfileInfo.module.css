@@ -1,0 +1,7 @@
+.content_background {
+    height: 200px;
+    background-color: lightskyblue;
+    background-image: url(https://camo.githubusercontent.com/9affee87c85c0ad86a233dfdcdf056c7dad968b45f0eb415826bdf87a03e2226/68747470733a2f2f7777772e70617261677974652e636f6d2f696d672f52656163745f42616e6e65722e706e67);
+    background-size: cover;
+    background-position: 0 -305px;
+}

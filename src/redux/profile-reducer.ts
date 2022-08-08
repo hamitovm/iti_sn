@@ -1,0 +1,55 @@
+import {ActionsType, ProfilePageDataType} from "./store";
+
+
+const ADD_POST = 'ADD-POST'
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
+type profileReducerActionType = AddPostActionType | UpdateNewPostTextActionType
+
+//  initialState - начальный стейт
+let initialState: ProfilePageDataType = {
+    postsCommentsData: [
+        {id: 1, message: 'Hi! ', likesCount: 12},
+        {id: 2, message: 'How are you?', likesCount: 2},
+        {id: 3, message: 'Ok!!!', likesCount: 9}
+    ],
+    newPostText: ''
+}
+
+// Редьюсер - принимает в себя стейт и экшн (объект), если тип экшна совпадает с одним из вариантов внутри редьюсера -
+// происходит изменение стейта, далее стейт возвращается. Если в экшне нет подходящего типа для этого редьюсера - стейт возвращается неизменным.
+export const profileReducer = (state: ProfilePageDataType = initialState, action: ActionsType) => {
+    switch (action.type) {
+        case ADD_POST:
+            return {...state,
+                newPostText: '',
+                postsCommentsData: [
+                    {
+                        id: 5,
+                        message: state.newPostText,
+                        likesCount: 0
+                    },
+                    ... state.postsCommentsData,
+                ]
+                }
+        case UPDATE_NEW_POST_TEXT:
+           // state.newPostText = action.textAreaSymbol
+            return {...state, newPostText: action.textAreaSymbol }
+        default:
+            return state
+    }
+}
+
+//ReturnType принимает функцию и возвращает тип возвращаемого значения, который функция вернула бы при вызове
+export type AddPostActionType = ReturnType<typeof addPostActionCreator>
+export type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostTextActionCreator>
+
+//Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
+export const addPostActionCreator = () => {
+    return {type: "ADD-POST"} as const
+}
+
+export const updateNewPostTextActionCreator = (text:string) => {
+    return {
+        type: 'UPDATE-NEW-POST-TEXT',
+        textAreaSymbol: text } as const
+}

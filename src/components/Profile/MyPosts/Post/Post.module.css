@@ -1,0 +1,13 @@
+.item {
+    margin: 15px 0;
+    padding: 5px;
+    color: #ececec;
+    background-color: #32363e;
+}
+
+.post__avatar {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
