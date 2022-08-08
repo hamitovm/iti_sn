@@ -4,7 +4,9 @@ import {Header} from "./components/Header/Header";
 import {Navbar} from "./components/Navbar/Navbar";
 import {Routes, Route} from 'react-router-dom';
 import {Profile} from "./components/Profile/Profile";
-import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
+import {
+    // DialogsContainer,
+    SuperDialogsContainer} from "./components/Dialogs/DialogsContainer";
 
 export function App() {
         return (
@@ -15,7 +17,7 @@ export function App() {
                 <Routes>
                     <Route
                         path="/dialogs/*"
-                        element={<DialogsContainer
+                        element={<SuperDialogsContainer
                             // store={props.store}
                                           // messagesPageData={props.state.messagesPageData}
                                           // dispatch={props.dispatch}
