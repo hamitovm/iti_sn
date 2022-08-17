@@ -1,8 +1,9 @@
 import {combineReducers, legacy_createStore as createStore} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
+import {usersReducer} from "./users-reducer";
 
-type ReducersType = typeof reducers
+export type ReducersType = typeof reducers
 
 export type StateType = ReturnType<ReducersType>
 //export type StateType = ReturnType<typeof store.getState>
@@ -12,6 +13,7 @@ export type StateType = ReturnType<ReducersType>
 let reducers = combineReducers({
     profilePageData: profileReducer,
     messagesPageData: dialogsReducer,
+    usersPageData: usersReducer
 })
 
 export let store = createStore<StateType, any, any, any>(reducers)

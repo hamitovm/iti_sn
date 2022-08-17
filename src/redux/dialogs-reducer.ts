@@ -27,7 +27,6 @@ let initialState: MessagesPageDataType = {
 export const dialogsReducer = (state: MessagesPageDataType = initialState, action: ActionsType) => {
     switch (action.type) {
         case UPDATE_NEW_MESSAGE_BODY:
-            debugger
             return  {...state,
                 newMessageBody: action.body}
         case SEND_MESSAGE:

@@ -6,10 +6,13 @@ import {Routes, Route} from 'react-router-dom';
 import {Profile} from "./components/Profile/Profile";
 import {
     // DialogsContainer,
-    SuperDialogsContainer} from "./components/Dialogs/DialogsContainer";
+    SuperDialogsContainer
+} from "./components/Dialogs/DialogsContainer";
+import {Users} from "./components/Users/Users";
+import {UsersContainer} from "./components/Users/UsersContainer";
 
 export function App() {
-        return (
+    return (
         < div className='app_wrapper'>
             < Header/>
             < Navbar/>
@@ -17,14 +20,12 @@ export function App() {
                 <Routes>
                     <Route
                         path="/dialogs/*"
-                        element={<SuperDialogsContainer
-                            // store={props.store}
-                                          // messagesPageData={props.state.messagesPageData}
-                                          // dispatch={props.dispatch}
-                        />}
+                        element={<SuperDialogsContainer/>}
                     />
                     <Route path="/profile/*"
                            element={<Profile/>}/>
+                    <Route path="/users/*"
+                           element={<UsersContainer/>}/>
                 </Routes>
             </div>
         </div>
