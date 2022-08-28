@@ -1,0 +1,19 @@
+.user__avatar {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+.page__numbers {
+  color: white;
+}
+
+.page__numbers {
+    padding: 20px;
+}
+.selected__page {
+    /*font-weight: bold;*/
+    padding: 20px;
+    color: gold;
+    text-decoration: underline;
+}
