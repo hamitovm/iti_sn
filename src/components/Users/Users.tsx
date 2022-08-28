@@ -11,6 +11,7 @@ type UsersPropsType = {
     followUser: (id: number) => void
     unfollowUser: (id: number) => void
     onPageNumberClickHandler: (pageNumber: number) => void
+    isFetching: boolean
 
 }
 

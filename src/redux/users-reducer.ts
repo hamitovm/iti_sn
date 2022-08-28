@@ -3,12 +3,14 @@ const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
+const CHANGE_IS_FETCHING_VALUE = 'CHANGE-IS-FETCHING-VALUE'
 export type usersReducerActionType =
     FollowActionType
     | UnfollowActionType
     | SetUsersActionType
     | SetCurrentPageActionType
     | SetTotalUsersCountActionType
+    | ChangeIsFetchingValueActionType
 export type UserType = {
     id: number,
     photos: {
@@ -24,7 +26,8 @@ export type UsersPageDataType = {
     users: Array<UserType>,
     pageSize: number,
     totalUsersCount: number,
-    currentPage: number
+    currentPage: number,
+    isFetching: boolean
 }
 //  initialState - начальный стейт
 let initialState: UsersPageDataType = {
@@ -34,7 +37,8 @@ let initialState: UsersPageDataType = {
     ],
     pageSize: 5,
     totalUsersCount: 20,
-    currentPage: 4
+    currentPage: 4,
+    isFetching: false
 }
 
 // Редьюсер - принимает в себя стейт и экшн (объект), если тип экшна совпадает с одним из вариантов внутри редьюсера -
@@ -65,6 +69,8 @@ export const usersReducer = (state: UsersPageDataType = initialState, action: us
             return {...state, currentPage: action.pageNumber}
         case SET_TOTAL_USERS_COUNT:
             return {...state, totalUsersCount: action.totalUsersCount}
+        case CHANGE_IS_FETCHING_VALUE:
+            return {...state, isFetching: action.isFetchingValue}
         default:
             return state
     }
@@ -76,6 +82,7 @@ export type UnfollowActionType = ReturnType<typeof unfollowAC>
 export type SetUsersActionType = ReturnType<typeof setUsersAC>
 export type SetCurrentPageActionType = ReturnType<typeof setCurrentPageAC>
 export type SetTotalUsersCountActionType = ReturnType<typeof setTotalUsersCountAC>
+export type ChangeIsFetchingValueActionType = ReturnType<typeof changeIsFetchingValueAC>
 
 //Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
 export const followAC = (userId: number) => {
@@ -108,5 +115,11 @@ export const setTotalUsersCountAC = (totalUsersCount: number) => {
     return {
         type: SET_TOTAL_USERS_COUNT,
         totalUsersCount
+    } as const
+}
+export const changeIsFetchingValueAC = (isFetchingValue: boolean) => {
+    return {
+        type: CHANGE_IS_FETCHING_VALUE,
+        isFetchingValue
     } as const
 }
