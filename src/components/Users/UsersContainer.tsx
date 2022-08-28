@@ -80,16 +80,25 @@ let mapStateToProps = (state: StateType) => {
         isFetching: state.usersPageData.isFetching
     }
 }
+//mapDispatchToProps - ниже вместо mapDispatchToProps в connect вторым параметром прокинут объект,
+// в котором свойству соответствует не колбек с диспатчем результата вызова экшн криейтора, а сам экшн-криейтор - альтернативный вариант с более короткой записью
+// let mapDispatchToProps = (dispatch: (action: usersReducerActionType) => void ) => {
+//     return {
+//         followUser: (userId: number)=>{dispatch(followAC(userId))},
+//         unfollowUser: (userId: number)=>{dispatch(unfollowAC(userId))},
+//         setUsers: (users: Array<UserType>)=>{dispatch(setUsersAC(users))},
+//         setCurrentPage: (currentPage: number)=>{dispatch(setCurrentPageAC(currentPage))},
+//         setTotalUsersCount: (totalUsersCount: number)=>{dispatch(setTotalUsersCountAC(totalUsersCount))},
+//         changeIsFetchingValue: (isFetchingValue: boolean)=>{dispatch(changeIsFetchingValueAC(isFetchingValue))}
+//     }
+// }
 
-let mapDispatchToProps = (dispatch: (action: usersReducerActionType) => void ) => {
-    return {
-        followUser: (userId: number)=>{dispatch(followAC(userId))},
-        unfollowUser: (userId: number)=>{dispatch(unfollowAC(userId))},
-        setUsers: (users: Array<UserType>)=>{dispatch(setUsersAC(users))},
-        setCurrentPage: (currentPage: number)=>{dispatch(setCurrentPageAC(currentPage))},
-        setTotalUsersCount: (totalUsersCount: number)=>{dispatch(setTotalUsersCountAC(totalUsersCount))},
-        changeIsFetchingValue: (isFetchingValue: boolean)=>{dispatch(changeIsFetchingValueAC(isFetchingValue))}
-    }
-}
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersClassComponent)
+export const UsersContainer = connect(mapStateToProps, {
+    followUser: followAC,
+    unfollowUser: unfollowAC,
+    setUsers: setUsersAC,
+    setCurrentPage: setCurrentPageAC,
+    setTotalUsersCount: setTotalUsersCountAC,
+    changeIsFetchingValue: changeIsFetchingValueAC
+})(UsersClassComponent)
