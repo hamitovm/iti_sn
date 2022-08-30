@@ -1,8 +1,7 @@
 import React from "react";
 import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
-import {StoreContext} from "../../../StoreContext";
-import {ActionsType} from "../../../redux/store";
+import {ActionsType, StoreContext} from "../../../StoreContext";
 import {sendMessageCreator, updateNewMessageBodyCreator} from "../../../redux/dialogs-reducer";
 import {connect} from "react-redux";
 import {Dialogs} from "../../Dialogs/Dialogs";

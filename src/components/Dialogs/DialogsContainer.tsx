@@ -1,10 +1,10 @@
 import React from 'react';
 import {Dialogs} from "./Dialogs";
 import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
-import {StoreContext} from "../../StoreContext";
+import {ActionsType, StoreContext} from "../../StoreContext";
 import {connect} from "react-redux";
 import {StateType} from "../../redux/redux-store";
-import {ActionsType, StoreType} from "../../redux/store";
+
 
 
 type PropsType = {

@@ -16,4 +16,4 @@ let reducers = combineReducers({
     usersPageData: usersReducer
 })
 
-export let store = createStore<StateType, any, any, any>(reducers)
+export let store = createStore(reducers)

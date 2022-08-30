@@ -1,10 +1,7 @@
 import React, {ChangeEvent, ChangeEventHandler} from 'react';
 import mod from '../Dialogs.module.css'
-import {
-    ActionsType,
-    EachMessagePropsType
-} from "../../../redux/store";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../../redux/dialogs-reducer";
+
+import {EachMessagePropsType, sendMessageCreator, updateNewMessageBodyCreator} from "../../../redux/dialogs-reducer";
 
 export type MessagePropsType = {
     messages: Array<EachMessagePropsType>

@@ -10,6 +10,7 @@ import {
 } from "./components/Dialogs/DialogsContainer";
 import {Users} from "./components/Users/Users";
 import {UsersContainer} from "./components/Users/UsersContainer";
+import {ProfileContainer} from "./components/Profile/ProfileContainer";
 
 export function App() {
     return (
@@ -23,7 +24,7 @@ export function App() {
                         element={<SuperDialogsContainer/>}
                     />
                     <Route path="/profile/*"
-                           element={<Profile/>}/>
+                           element={<ProfileContainer/>}/>
                     <Route path="/users/*"
                            element={<UsersContainer/>}/>
                 </Routes>

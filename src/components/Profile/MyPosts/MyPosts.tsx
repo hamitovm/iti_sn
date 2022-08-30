@@ -1,9 +1,8 @@
 import React from "react";
 import mod from './MyPosts.module.css'
 import {Post} from "./Post/Post";
-import {
-    PostCommentType,
-} from "../../../redux/store";
+import {PostCommentType} from "../../../redux/profile-reducer";
+
 
 type MyPostsProps = {
     postsCommentsData: Array<PostCommentType>

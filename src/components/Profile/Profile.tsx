@@ -1,17 +1,21 @@
 import React from "react";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer, SuperMyPostsContainer} from "./MyPosts/MyPostsContainer";
+import {ProfileContainerPropsType} from "./ProfileContainer";
+import {Preloader} from "../common/preloader";
 
-type ProfilePostsType = {
-    // store: StoreType
+export type ProfilePostsType = {
+
 }
 
-export const Profile = (props: ProfilePostsType) => {
+export const Profile = (props: ProfileContainerPropsType) => {
+
     return (
         <div>
-            <ProfileInfo/>
+            <ProfileInfo userProfile={props.userProfile}/>
+            <h1>{props.userProfile ? props.userProfile.fullName : 'null'}</h1>
             <SuperMyPostsContainer
-                // store={props.store}
+
             />
         </div>
     )
