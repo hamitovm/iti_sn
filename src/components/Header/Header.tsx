@@ -4,7 +4,6 @@ import {NavLink} from "react-router-dom";
 import {HeaderContainerPropsType} from "./HeaderContainer";
 
 export const Header = (props:HeaderContainerPropsType) => {
-    console.log(props.authUserData.login)
     return (
         <header className={mod.header}>
             <img
@@ -15,8 +14,6 @@ export const Header = (props:HeaderContainerPropsType) => {
                     props.authUserData.isAuth ? props.authUserData.login : 'Login'
                 }</NavLink>
                 <div>{props.authUserData.login + ' - login '}{props.authUserData.id + ' - id '}{props.authUserData.email + ' - email'}</div>
-                <div></div>
-                <div></div>
             </div>
         </header>
     )
