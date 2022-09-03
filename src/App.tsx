@@ -11,11 +11,13 @@ import {
 import {Users} from "./components/Users/Users";
 import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
+import {HeaderContainer} from "./components/Header/HeaderContainer";
 
 export function App() {
+
     return (
         < div className='app_wrapper'>
-            < Header/>
+            < HeaderContainer/>
             < Navbar/>
             <div className='app_wrapper_content'>
                 <Routes>
