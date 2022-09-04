@@ -4,6 +4,7 @@ const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 const CHANGE_IS_FETCHING_VALUE = 'CHANGE-IS-FETCHING-VALUE'
+const CHANGE_IS_FOLLOWING_PROGRESS = 'CHANGE_IS_FOLLOWING_PROGRESS'
 export type usersReducerActionType =
     FollowActionType
     | UnfollowActionType
@@ -11,6 +12,7 @@ export type usersReducerActionType =
     | SetCurrentPageActionType
     | SetTotalUsersCountActionType
     | ChangeIsFetchingValueActionType
+    | changeIsFollowingProgressActionType
 export type UserType = {
     id: number,
     photos: {
@@ -28,6 +30,7 @@ export type UsersPageDataType = {
     totalUsersCount: number,
     currentPage: number,
     isFetching: boolean
+    followingInProgress: Array<number>
 }
 //  initialState - начальный стейт
 let initialState: UsersPageDataType = {
@@ -38,12 +41,13 @@ let initialState: UsersPageDataType = {
     pageSize: 5,
     totalUsersCount: 20,
     currentPage: 4,
-    isFetching: false
+    isFetching: false,
+    followingInProgress: []
 }
 
 // Редьюсер - принимает в себя стейт и экшн (объект), если тип экшна совпадает с одним из вариантов внутри редьюсера -
 // происходит изменение стейта, далее стейт возвращается. Если в экшне нет подходящего типа для этого редьюсера - стейт возвращается неизменным.
-export const usersReducer = (state: UsersPageDataType = initialState, action: usersReducerActionType) => {
+export const usersReducer = (state: UsersPageDataType = initialState, action: usersReducerActionType):UsersPageDataType => {
     switch (action.type) {
         case FOLLOW:
             const userToFollow = {...state.users.find(el => el.id === action.userId)}
@@ -71,6 +75,16 @@ export const usersReducer = (state: UsersPageDataType = initialState, action: us
             return {...state, totalUsersCount: action.totalUsersCount}
         case CHANGE_IS_FETCHING_VALUE:
             return {...state, isFetching: action.isFetchingValue}
+        //    В момент нажатия на кнопку подписки - отправляется в экшне true и айди,
+        //    айди попадает в массив - значит кнопка польсователя с таким айди будет задизейблена.
+        //    После того, как придут данные от сервера - опять задиспатчится экшн, в котором уже будет
+        //    false  и айди, айди удалится из массива followingInProgress и кнопка снова станет кликабельной.
+        case CHANGE_IS_FOLLOWING_PROGRESS:
+            return {...state,
+                followingInProgress: action.isFetchingData ?
+                    [...state.followingInProgress, action.userId] :
+                    state.followingInProgress.filter(el => el !== action.userId)
+                }
         default:
             return state
     }
@@ -83,6 +97,7 @@ export type SetUsersActionType = ReturnType<typeof setUsersAC>
 export type SetCurrentPageActionType = ReturnType<typeof setCurrentPageAC>
 export type SetTotalUsersCountActionType = ReturnType<typeof setTotalUsersCountAC>
 export type ChangeIsFetchingValueActionType = ReturnType<typeof changeIsFetchingValueAC>
+export type changeIsFollowingProgressActionType = ReturnType<typeof changeIsFollowingProgressAC>
 
 //Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
 export const followAC = (userId: number) => {
@@ -121,5 +136,13 @@ export const changeIsFetchingValueAC = (isFetchingValue: boolean) => {
     return {
         type: CHANGE_IS_FETCHING_VALUE,
         isFetchingValue
+    } as const
+}
+
+export const changeIsFollowingProgressAC = (isFetchingData: boolean, userId: number) => {
+    return {
+        type: CHANGE_IS_FOLLOWING_PROGRESS,
+        isFetchingData,
+        userId
     } as const
 }

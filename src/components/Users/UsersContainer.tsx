@@ -2,7 +2,7 @@ import {StateType} from "../../redux/redux-store";
 
 import {connect} from "react-redux";
 import {
-    changeIsFetchingValueAC,
+    changeIsFetchingValueAC, changeIsFollowingProgressAC,
     followAC,
     setCurrentPageAC, setTotalUsersCountAC,
     setUsersAC,
@@ -17,21 +17,23 @@ import {Preloader} from "../common/preloader";
 import {usersAPI} from "../../api/api";
 
 
-type UsersPropsType = {
+type UsersClassComponentPropsType = {
     users: Array<UserType>,
     pageSize: number,
     totalUsersCount: number,
     currentPage: number,
-    followUser: (id: number) => void
-    unfollowUser: (id: number) => void
-    setUsers: (users: Array<UserType>) => void
-    setCurrentPage: (currentPage: number) => void
-    setTotalUsersCount: (totalUsersCount: number) => void
-    isFetching: boolean
-    changeIsFetchingValue: (isFetchingValue: boolean) => void
+    followUser: (id: number) => void,
+    unfollowUser: (id: number) => void,
+    setUsers: (users: Array<UserType>) => void,
+    setCurrentPage: (currentPage: number) => void,
+    setTotalUsersCount: (totalUsersCount: number) => void,
+    isFetching: boolean,
+    changeIsFetchingValue: (isFetchingValue: boolean) => void,
+    changeIsFollowingProgress: (isFetchingData: boolean, userId: number) => void,
+    followingInProgress: Array<number>
 }
 
-export class UsersClassComponent extends React.Component<UsersPropsType> {
+export class UsersClassComponent extends React.Component<UsersClassComponentPropsType> {
 
     //componentDidMount() вызывается сразу после монтирования компонента (вставлено в DOM-дерево).
     // Инициализация, требующая DOM-узлов, должна быть здесь. Если вам нужно загружать данные с удалённой конечной точки (endpoint),
@@ -39,7 +41,7 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
     //changeIsFetchingValue ставится true в момент начала загрузки данных и перед сетом возвращается false
     componentDidMount() {
         this.props.changeIsFetchingValue(true)
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then( data => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
             this.props.changeIsFetchingValue(false)
             this.props.setUsers(data.items)
             this.props.setTotalUsersCount(data.totalCount)
@@ -66,7 +68,10 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
                        followUser={this.props.followUser}
                        unfollowUser={this.props.unfollowUser}
                        onPageNumberClickHandler={this.onPageNumberClickHandler}
-                       isFetching={this.props.isFetching}/>
+                       isFetching={this.props.isFetching}
+                       followingInProgress={this.props.followingInProgress}
+                       changeIsFollowingProgress={this.props.changeIsFollowingProgress}
+                />
             </>
 
         )
@@ -79,7 +84,8 @@ let mapStateToProps = (state: StateType) => {
         pageSize: state.usersPageData.pageSize,
         totalUsersCount: state.usersPageData.totalUsersCount,
         currentPage: state.usersPageData.currentPage,
-        isFetching: state.usersPageData.isFetching
+        isFetching: state.usersPageData.isFetching,
+        followingInProgress: state.usersPageData.followingInProgress
     }
 }
 //mapDispatchToProps - ниже вместо mapDispatchToProps в connect вторым параметром прокинут объект,
@@ -102,5 +108,6 @@ export const UsersContainer = connect(mapStateToProps, {
     setUsers: setUsersAC,
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
-    changeIsFetchingValue: changeIsFetchingValueAC
+    changeIsFetchingValue: changeIsFetchingValueAC,
+    changeIsFollowingProgress: changeIsFollowingProgressAC
 })(UsersClassComponent)
