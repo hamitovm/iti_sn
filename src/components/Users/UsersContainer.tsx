@@ -35,6 +35,9 @@ type UsersClassComponentPropsType = {
 
 export class UsersClassComponent extends React.Component<UsersClassComponentPropsType> {
 
+
+
+
     //componentDidMount() вызывается сразу после монтирования компонента (вставлено в DOM-дерево).
     // Инициализация, требующая DOM-узлов, должна быть здесь. Если вам нужно загружать данные с удалённой конечной точки (endpoint),
     // это хорошее место для создания экземпляра сетевого запроса.
