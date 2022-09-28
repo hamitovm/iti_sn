@@ -2,19 +2,16 @@ import {StateType} from "../../redux/redux-store";
 
 import {connect} from "react-redux";
 import {
-    changeIsFetchingValueAC, changeIsFollowingProgressAC,
-    followAC,
+    changeIsFetchingValueAC, changeIsFollowingProgressAC, follow,
+    getUsersThunkCreator,
     setCurrentPageAC, setTotalUsersCountAC,
-    setUsersAC,
-    unfollowAC,
-    usersReducerActionType,
+    setUsersAC, unfollow,
     UserType
 } from "../../redux/users-reducer";
 import React from "react";
-import axios from "axios";
+
 import {Users} from "./Users";
 import {Preloader} from "../common/preloader";
-import {usersAPI} from "../../api/api";
 
 
 type UsersClassComponentPropsType = {
@@ -30,7 +27,9 @@ type UsersClassComponentPropsType = {
     isFetching: boolean,
     changeIsFetchingValue: (isFetchingValue: boolean) => void,
     changeIsFollowingProgress: (isFetchingData: boolean, userId: number) => void,
-    followingInProgress: Array<number>
+    followingInProgress: Array<number>,
+    getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+
 }
 
 export class UsersClassComponent extends React.Component<UsersClassComponentPropsType> {
@@ -41,24 +40,15 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
     //componentDidMount() вызывается сразу после монтирования компонента (вставлено в DOM-дерево).
     // Инициализация, требующая DOM-узлов, должна быть здесь. Если вам нужно загружать данные с удалённой конечной точки (endpoint),
     // это хорошее место для создания экземпляра сетевого запроса.
-    //changeIsFetchingValue ставится true в момент начала загрузки данных и перед сетом возвращается false
-    componentDidMount() {
-        this.props.changeIsFetchingValue(true)
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.changeIsFetchingValue(false)
-            this.props.setUsers(data.items)
-            this.props.setTotalUsersCount(data.totalCount)
-        })
-    }
 
+    componentDidMount() {
+        this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
+    }
     // Реагирование на изменение номера страницы, отображение данных соответственно номеру страницы
     onPageNumberClickHandler = (pageNumber: number) => {
         this.props.changeIsFetchingValue(true)
         this.props.setCurrentPage(pageNumber)
-        usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-            this.props.changeIsFetchingValue(false)
-            this.props.setUsers(data.items)
-        })
+        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
     }
 
     render() {
@@ -95,8 +85,8 @@ let mapStateToProps = (state: StateType) => {
 // в котором свойству соответствует не колбек с диспатчем результата вызова экшн криейтора, а сам экшн-криейтор - альтернативный вариант с более короткой записью
 // let mapDispatchToProps = (dispatch: (action: usersReducerActionType) => void ) => {
 //     return {
-//         followUser: (userId: number)=>{dispatch(followAC(userId))},
-//         unfollowUser: (userId: number)=>{dispatch(unfollowAC(userId))},
+//         followUser: (userId: number)=>{dispatch(followSuccessAC(userId))},
+//         unfollowUser: (userId: number)=>{dispatch(unfollowSuccessAC(userId))},
 //         setUsers: (users: Array<UserType>)=>{dispatch(setUsersAC(users))},
 //         setCurrentPage: (currentPage: number)=>{dispatch(setCurrentPageAC(currentPage))},
 //         setTotalUsersCount: (totalUsersCount: number)=>{dispatch(setTotalUsersCountAC(totalUsersCount))},
@@ -106,11 +96,12 @@ let mapStateToProps = (state: StateType) => {
 
 
 export const UsersContainer = connect(mapStateToProps, {
-    followUser: followAC,
-    unfollowUser: unfollowAC,
+    followUser: follow,
+    unfollowUser: unfollow,
     setUsers: setUsersAC,
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
     changeIsFetchingValue: changeIsFetchingValueAC,
-    changeIsFollowingProgress: changeIsFollowingProgressAC
+    changeIsFollowingProgress: changeIsFollowingProgressAC,
+    getUsersThunkCreator: getUsersThunkCreator
 })(UsersClassComponent)

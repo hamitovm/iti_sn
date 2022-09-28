@@ -1,3 +1,6 @@
+import {usersAPI} from "../api/api";
+import {Dispatch} from "redux";
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
@@ -91,8 +94,10 @@ export const usersReducer = (state: UsersPageDataType = initialState, action: us
 }
 
 //ReturnType принимает функцию и возвращает тип возвращаемого значения, который функция вернула бы при вызове
-export type FollowActionType = ReturnType<typeof followAC>
-export type UnfollowActionType = ReturnType<typeof unfollowAC>
+export type FollowActionType = ReturnType<typeof followSuccessAC
+    >
+export type UnfollowActionType = ReturnType<typeof unfollowSuccessAC
+    >
 export type SetUsersActionType = ReturnType<typeof setUsersAC>
 export type SetCurrentPageActionType = ReturnType<typeof setCurrentPageAC>
 export type SetTotalUsersCountActionType = ReturnType<typeof setTotalUsersCountAC>
@@ -100,14 +105,16 @@ export type ChangeIsFetchingValueActionType = ReturnType<typeof changeIsFetching
 export type changeIsFollowingProgressActionType = ReturnType<typeof changeIsFollowingProgressAC>
 
 //Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
-export const followAC = (userId: number) => {
+export const followSuccessAC
+    = (userId: number) => {
     return {
         type: FOLLOW,
         userId: userId
     } as const
 }
 
-export const unfollowAC = (userId: number) => {
+export const unfollowSuccessAC
+    = (userId: number) => {
     return {
         type: UNFOLLOW,
         userId: userId
@@ -145,4 +152,50 @@ export const changeIsFollowingProgressAC = (isFetchingData: boolean, userId: num
         isFetchingData,
         userId
     } as const
+}
+
+//thunk - функция, которая внутри себя диспатчит другие экшны, это функция, которая оборачивает выражение, чтобы отложить его вычисление.
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+
+    return (dispatch: Dispatch<usersReducerActionType>) => {
+        //changeIsFetchingValue ставится true в момент начала загрузки данных и перед сетом возвращается false
+        dispatch(changeIsFetchingValueAC(true))
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(changeIsFetchingValueAC(false))
+            dispatch(setUsersAC(data.items))
+            dispatch(setTotalUsersCountAC(data.totalCount))
+        })
+    }
+}
+
+export const follow = (userId: number) => {
+
+    return (dispatch: Dispatch<usersReducerActionType>) => {
+        // Кнопка задизейблится
+        dispatch(changeIsFollowingProgressAC(true, userId))
+        usersAPI.follow(userId)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(followSuccessAC(userId))
+                }
+                // Кнопка раздизейблится
+                dispatch(changeIsFollowingProgressAC(false, userId))
+            })
+    }
+}
+
+export const unfollow = (userId: number) => {
+
+    return (dispatch: Dispatch<usersReducerActionType>) => {
+        // Кнопка задизейблится
+        dispatch(changeIsFollowingProgressAC(true, userId))
+        usersAPI.unfollow(userId)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(unfollowSuccessAC(userId))
+                }
+                // Кнопка раздизейблится
+                dispatch(changeIsFollowingProgressAC(false, userId))
+            })
+    }
 }

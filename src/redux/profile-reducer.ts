@@ -1,3 +1,5 @@
+import {Dispatch} from "redux";
+import {profileAPI} from "../api/api";
 
 
 const ADD_POST = 'ADD-POST'
@@ -63,7 +65,7 @@ export const profileReducer = (state: ProfilePageDataType = initialState, action
                         message: state.newPostText,
                         likesCount: 0
                     },
-                    ... state.postsCommentsData,
+                    ...state.postsCommentsData,
                 ]
                 }
         case UPDATE_NEW_POST_TEXT:
@@ -98,4 +100,15 @@ export const setUserProfileAC = (profile: ProfileType) => {
     return {
         type: SET_USER_PROFILE,
         profile } as const
+}
+
+export const getUserProfile = (userId: string) => {
+
+    return (dispatch: Dispatch<profileReducerActionType>) => {
+        profileAPI.getProfile(userId)
+            .then(response => {
+                dispatch(setUserProfileAC(response.data))
+                })
+
+    }
 }

@@ -2,9 +2,7 @@ import React from "react";
 import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {ActionsType, StoreContext} from "../../../StoreContext";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../../redux/dialogs-reducer";
 import {connect} from "react-redux";
-import {Dialogs} from "../../Dialogs/Dialogs";
 import {StateType} from "../../../redux/redux-store";
 
 type MyPostsContainerProps = {
