@@ -36,7 +36,9 @@ type PropsType = {
 // mapStateToProps (общепринятое название) - принимает стейт, возвращает объект со стейтовыми пропсами для компоненты
  let mapStateToProps = (state: StateType) => {
     return {
-        messagesPageData: state.messagesPageData
+        messagesPageData: state.messagesPageData,
+        isAuth: state.auth.isAuth
+
     }
  }
 // mapDispatchToProps (общепринятое название) - принимает диспатч, возвращает объект с колбековыми пропсами для компоненты

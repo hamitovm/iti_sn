@@ -12,6 +12,7 @@ import React from "react";
 
 import {Users} from "./Users";
 import {Preloader} from "../common/preloader";
+import {Navigate} from "react-router-dom";
 
 
 type UsersClassComponentPropsType = {
@@ -29,6 +30,7 @@ type UsersClassComponentPropsType = {
     changeIsFollowingProgress: (isFetchingData: boolean, userId: number) => void,
     followingInProgress: Array<number>,
     getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+    isAuth: boolean
 
 }
 
@@ -52,6 +54,7 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
     }
 
     render() {
+        if (!this.props.isAuth) return <Navigate to={'/login'} />
         return (<>
                 {this.props.isFetching ? <Preloader/> : null}
                 <Users users={this.props.users}
@@ -78,7 +81,8 @@ let mapStateToProps = (state: StateType) => {
         totalUsersCount: state.usersPageData.totalUsersCount,
         currentPage: state.usersPageData.currentPage,
         isFetching: state.usersPageData.isFetching,
-        followingInProgress: state.usersPageData.followingInProgress
+        followingInProgress: state.usersPageData.followingInProgress,
+        isAuth: state.auth.isAuth
     }
 }
 //mapDispatchToProps - ниже вместо mapDispatchToProps в connect вторым параметром прокинут объект,

@@ -2,7 +2,7 @@ import {UserType} from "../../redux/users-reducer";
 import mod from './Users.module.css'
 import default_user_photo from '../../assets/images/e_photo.png';
 import React from "react";
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import axios from "axios";
 import {usersAPI} from "../../api/api";
 
@@ -30,6 +30,7 @@ export const Users = (props: UsersPropsType) => {
     if (props.currentPage > pagesCount - 2) {
         pages = [1, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
     }
+
 
     return (
         <div>

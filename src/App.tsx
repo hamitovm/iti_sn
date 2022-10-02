@@ -11,6 +11,7 @@ import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/HeaderContainer";
 import axios from "axios";
+import {Login} from "./components/Login/Login";
 
 export function App() {
     //Промис - это объект, не имеет свойств, но имеет методы.
@@ -244,6 +245,8 @@ export function App() {
                            element={<ProfileContainer/>}/>
                     <Route path="/users/*"
                            element={<UsersContainer/>}/>
+                    <Route path="/login"
+                           element={<Login/>}/>
                 </Routes>
             </div>
         </div>
