@@ -160,7 +160,8 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
     return (dispatch: Dispatch<usersReducerActionType>) => {
         //changeIsFetchingValue ставится true в момент начала загрузки данных и перед сетом возвращается false
         dispatch(changeIsFetchingValueAC(true))
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        usersAPI.getUsers(currentPage, pageSize)
+            .then(data => {
             dispatch(changeIsFetchingValueAC(false))
             dispatch(setUsersAC(data.items))
             dispatch(setTotalUsersCountAC(data.totalCount))
