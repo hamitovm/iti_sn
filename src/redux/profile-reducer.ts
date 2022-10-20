@@ -5,13 +5,15 @@ import {profileAPI} from "../api/api";
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
-export type profileReducerActionType = AddPostActionType | UpdateNewPostTextActionType | SetUserProfileACType
+const SET_USER_STATUS = 'SET-USER-STATUS'
+export type profileReducerActionType = AddPostActionType | UpdateNewPostTextActionType | SetUserProfileACType | SetUserStatusACType
 
 
 export type ProfilePageDataType = {
     postsCommentsData: Array<PostCommentType>,
     newPostText: string,
     profile: null | ProfileType
+    status: string
 }
 
 export type PostCommentType = {
@@ -49,7 +51,8 @@ let initialState: ProfilePageDataType = {
         {id: 3, message: 'Ok!!!', likesCount: 9}
     ],
     newPostText: '',
-    profile: null
+    profile: null,
+    status: ''
 }
 
 // Редьюсер - принимает в себя стейт и экшн (объект), если тип экшна совпадает с одним из вариантов внутри редьюсера -
@@ -76,6 +79,10 @@ export const profileReducer = (state: ProfilePageDataType = initialState, action
             profile: {
                 ...action.profile
             }}
+        case SET_USER_STATUS:
+            return {...state,
+                status: action.status
+                }
         default:
             return state
     }
@@ -85,6 +92,7 @@ export const profileReducer = (state: ProfilePageDataType = initialState, action
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostTextActionCreator>
 export type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
+export type SetUserStatusACType = ReturnType<typeof setUserStatusAC>
 
 //Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
 export const addPostActionCreator = () => {
@@ -102,6 +110,12 @@ export const setUserProfileAC = (profile: ProfileType) => {
         profile } as const
 }
 
+export const setUserStatusAC = (status: string) => {
+    return {
+        type: SET_USER_STATUS,
+        status: status } as const
+}
+
 export const getUserProfile = (userId: string) => {
 
     return (dispatch: Dispatch<profileReducerActionType>) => {
@@ -109,6 +123,30 @@ export const getUserProfile = (userId: string) => {
             .then(response => {
                 dispatch(setUserProfileAC(response.data))
                 })
+
+    }
+}
+
+export const getUserStatus = (userId: string) => {
+
+    return (dispatch: Dispatch<profileReducerActionType>) => {
+        profileAPI.getStatus(userId)
+            .then(response => {
+                dispatch(setUserStatusAC(response.data))
+            })
+
+    }
+}
+export const updateUserStatus = (status: string) => {
+
+    return (dispatch: Dispatch<profileReducerActionType>) => {
+        profileAPI.updateStatus(status)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(setUserStatusAC(status))
+                }
+
+            })
 
     }
 }

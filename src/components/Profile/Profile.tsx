@@ -7,10 +7,9 @@ import {Navigate} from "react-router-dom";
 export type ProfilePostsType = {}
 
 export const Profile = (props: ProfileContainerPropsType) => {
-
     return (
         <div>
-            <ProfileInfo userProfile={props.userProfile}/>
+            <ProfileInfo userProfile={props.userProfile} status={props.userStatus} updateUserStatus={props.updateUserStatus}/>
             <h1>{props.userProfile && props.userProfile.fullName}</h1>
             <SuperMyPostsContainer
 
