@@ -132,7 +132,6 @@ export const getUserStatus = (userId: string) => {
     return (dispatch: Dispatch<profileReducerActionType>) => {
         profileAPI.getStatus(userId)
             .then(response => {
-                console.log('status setted')
                 dispatch(setUserStatusAC(response.data))
 
             })
@@ -146,7 +145,6 @@ export const updateUserStatus = (status: string) => {
             .then(response => {
                 if (response.data.resultCode === 0) {
                     dispatch(setUserStatusAC(status))
-                    console.log('status updated')
                 }
 
             })
