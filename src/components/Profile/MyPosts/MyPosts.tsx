@@ -8,9 +8,8 @@ import {Formik} from "formik";
 
 type MyPostsProps = {
     postsCommentsData: Array<PostCommentType>
-    newPostTextAreaValue: string
     onTextareaChangeHandler: (text: string) => void
-    addPost: () => void
+    addPost: (newPostText: string) => void
 }
 
 export const MyPosts = (props: MyPostsProps) => {
@@ -20,38 +19,38 @@ export const MyPosts = (props: MyPostsProps) => {
 
     let newPostElement = React.createRef<HTMLTextAreaElement>()
 
-    const onTextareaChangeHandler = () => {
-        if (newPostElement.current) {
-            let text = newPostElement.current.value
-            props.onTextareaChangeHandler(text)
-        }
-    }
+    // const onTextareaChangeHandler = () => {
+    //     if (newPostElement.current) {
+    //         let text = newPostElement.current.value
+    //         props.onTextareaChangeHandler(text)
+    //     }
+    // }
 
     return (
         <div className={mod.posts_block}>
             <h3>My posts</h3>
-            <div>
-                <textarea
-                    ref={newPostElement}
-                    name="" id="" cols={70} rows={3}
-                    value={props.newPostTextAreaValue}
-                    onChange={onTextareaChangeHandler}/>
-                <div>
-                    <button onClick={props.addPost}>Add post</button>
-                </div>
-            </div>
-            <Formik initialValues={{ newPost: props.newPostTextAreaValue}}
+            {/*<div>*/}
+            {/*    <textarea*/}
+            {/*        ref={newPostElement}*/}
+            {/*        name="" id="" cols={70} rows={3}*/}
+            {/*        value={props.newPostTextAreaValue}*/}
+            {/*        onChange={onTextareaChangeHandler}/>*/}
+            {/*    <div>*/}
+            {/*        <button onClick={props.addPost}>Add post</button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            <Formik initialValues={{ newPost: ''}}
                     validationSchema={Yup.object({
                         newPost: Yup.string()
                             .required('Required')
                     })}
-                    onSubmit={values => {
-                        props.onTextareaChangeHandler(values.newPost);
-                        props.addPost()
+                    onSubmit={(values, onSubmitProps) => {
+                        // props.onTextareaChangeHandler(values.newPost);
+                        props.addPost(values.newPost)
+                        onSubmitProps.resetForm()
                     }}
             >
                 {formik => (
-
                     <form onSubmit={formik.handleSubmit}>
                         <div>
                             <textarea

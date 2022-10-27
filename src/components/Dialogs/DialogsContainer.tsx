@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dialogs, DialogsPropsType} from "./Dialogs";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
+import {sendMessageCreator} from "../../redux/dialogs-reducer";
 import {ActionsType, StoreContext} from "../../StoreContext";
 import {connect} from "react-redux";
 import {StateType} from "../../redux/redux-store";
@@ -47,12 +47,9 @@ type PropsType = {
 // mapDispatchToProps (общепринятое название) - принимает диспатч, возвращает объект с колбековыми пропсами для компоненты
 let mapDispatchToProps = (dispatch: (action: ActionsType) => void ) => {
     return {
-        sendMessage: () => {
-            dispatch(sendMessageCreator())
+        sendMessage: (newMessageBody: string) => {
+            dispatch(sendMessageCreator(newMessageBody))
         },
-        updateNewMessageBody: (text: string) => {
-            dispatch(updateNewMessageBodyCreator(text))
-        }
     }
 }
 

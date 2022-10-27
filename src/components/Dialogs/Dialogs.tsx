@@ -3,17 +3,18 @@ import {DialogItem} from "./DialogItem/DialogItem";
 
 import mod from './Dialogs.module.css'
 import {EachMessagePropsType, MessagesPageDataType} from "../../redux/dialogs-reducer";
-import { Navigate } from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
+import {Formik} from "formik";
+import * as Yup from "yup";
 // import {StateType} from "../../redux/redux-store";
 
 
- export type DialogsPropsType = {
-     messagesPageData: MessagesPageDataType
-     // isAuth: boolean
-     sendMessage: () => void
-     updateNewMessageBody: (text: string) => void
- }
-export const Dialogs = (props:DialogsPropsType) => {
+export type DialogsPropsType = {
+    messagesPageData: MessagesPageDataType
+    // isAuth: boolean
+    sendMessage: (newMessageBody: string) => void
+}
+export const Dialogs = (props: DialogsPropsType) => {
 
     const dialogItems = props.messagesPageData.dialogs.map((el, index) => {
         return (
@@ -21,14 +22,9 @@ export const Dialogs = (props:DialogsPropsType) => {
         )
     })
 
-    let messageElements = props.messagesPageData.messageArr.map((el: EachMessagePropsType, index: number) => <div key={index}  className={mod.message}>{el.message}</div>)
+    let messageElements = props.messagesPageData.messageArr.map((el: EachMessagePropsType, index: number) => <div
+        key={index} className={mod.message}>{el.message}</div>)
 
-    const onTextAreaChengeHandler = (e:ChangeEvent<HTMLTextAreaElement>) => {
-        if (e.currentTarget) {
-            let text = e.currentTarget.value
-            props.updateNewMessageBody(text)
-        }
-    }
 
     // if (!props.isAuth) return <Navigate to={'/login'} />
 
@@ -39,17 +35,40 @@ export const Dialogs = (props:DialogsPropsType) => {
             </div>
             <div className={mod.messageArr}>
                 {messageElements}
-                <div>
-                <textarea
-                    placeholder='Enter your message'
-                    value={props.messagesPageData.newMessageBody}
-                    onChange={onTextAreaChengeHandler}
-                    cols={60}
-                    rows={2}/>
-                    <div>
-                        <button onClick={props.sendMessage}>Send message</button>
-                    </div>
-                </div>
+                {/*<div>*/}
+                {/*    <textarea*/}
+                {/*    placeholder='Enter your message'*/}
+                {/*    value={props.messagesPageData.newMessageBody}*/}
+                {/*    onChange={onTextAreaChengeHandler}*/}
+                {/*    cols={60}*/}
+                {/*    rows={2}/>*/}
+                {/*    <div>*/}
+                {/*        <button onClick={props.sendMessage}>Send message</button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                <Formik initialValues={{newMessage: ''}}
+                        validationSchema={Yup.object({
+                            newMessage: Yup.string()
+                                .required('Required')
+                        })}
+                        onSubmit={(values, onSubmitProps) => {
+                            props.sendMessage(values.newMessage)
+                            onSubmitProps.resetForm()
+                        }}
+                >
+                    {formik => (
+                        <form onSubmit={formik.handleSubmit}>
+                            <div>
+                            <textarea
+                                placeholder='Enter your message'
+                                id="newMessage" cols={60} rows={2}
+                                {...formik.getFieldProps('newMessage')}
+                            />
+                            </div>
+                            <button type="submit">Send message formik</button>
+                        </form>
+                    )}
+                </Formik>
             </div>
         </div>
     )

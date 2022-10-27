@@ -17,15 +17,14 @@ export const MyPostsContainer = (props: MyPostsContainerProps) => {
         <StoreContext.Consumer>
             {store => {
                 let state = store.getState()
-                const addPost = () => {
-                    store.dispatch(addPostActionCreator())
+                const addPost = (newPostText: string) => {
+                    store.dispatch(addPostActionCreator(newPostText))
                 }
                 const onTextareaChangeHandler = (text: string) => {
                     store.dispatch(updateNewPostTextActionCreator(text))
                 }
                 return (
                     <MyPosts postsCommentsData={state.profilePageData.postsCommentsData}
-                             newPostTextAreaValue={state.profilePageData.newPostText}
                              onTextareaChangeHandler={onTextareaChangeHandler}
                              addPost={addPost}/>
                 )
@@ -39,14 +38,13 @@ export const MyPostsContainer = (props: MyPostsContainerProps) => {
 let mapStateToProps = (state: StateType) => {
     return {
         postsCommentsData: state.profilePageData.postsCommentsData,
-        newPostTextAreaValue: state.profilePageData.newPostText
     }
 }
 
 let mapDispatchToProps = (dispatch: (action: ActionsType) => void) => {
     return {
-        addPost: () => {
-            dispatch(addPostActionCreator())
+        addPost: (newPostText: string) => {
+            dispatch(addPostActionCreator(newPostText))
         },
         onTextareaChangeHandler: (text: string) => {
             dispatch(updateNewPostTextActionCreator(text))        }

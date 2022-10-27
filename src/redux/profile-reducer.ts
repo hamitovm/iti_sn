@@ -11,7 +11,6 @@ export type profileReducerActionType = AddPostActionType | UpdateNewPostTextActi
 
 export type ProfilePageDataType = {
     postsCommentsData: Array<PostCommentType>,
-    newPostText: string,
     profile: null | ProfileType
     status: string
 }
@@ -50,7 +49,6 @@ let initialState: ProfilePageDataType = {
         {id: 2, message: 'How are you?', likesCount: 2},
         {id: 3, message: 'Ok!!!', likesCount: 9}
     ],
-    newPostText: '',
     profile: null,
     status: ''
 }
@@ -61,11 +59,10 @@ export const profileReducer = (state: ProfilePageDataType = initialState, action
     switch (action.type) {
         case ADD_POST:
             return {...state,
-                newPostText: '',
                 postsCommentsData: [
                     {
                         id: 5,
-                        message: state.newPostText,
+                        message: action.newPostText,
                         likesCount: 0
                     },
                     ...state.postsCommentsData,
@@ -95,8 +92,9 @@ export type SetUserProfileACType = ReturnType<typeof setUserProfileAC>
 export type SetUserStatusACType = ReturnType<typeof setUserStatusAC>
 
 //Action-creator'ы - возвращают объект (экшн), который передается в диспатч. Внутри экшна обязаетельно прописывается type
-export const addPostActionCreator = () => {
-    return {type: "ADD-POST"} as const
+export const addPostActionCreator = (newPostText: string) => {
+    return {type: "ADD-POST",
+        newPostText} as const
 }
 
 export const updateNewPostTextActionCreator = (text:string) => {
