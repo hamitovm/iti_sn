@@ -2,6 +2,8 @@ import React from "react";
 import mod from './MyPosts.module.css'
 import {Post} from "./Post/Post";
 import {PostCommentType} from "../../../redux/profile-reducer";
+import * as Yup from "yup";
+import {Formik} from "formik";
 
 
 type MyPostsProps = {
@@ -38,6 +40,30 @@ export const MyPosts = (props: MyPostsProps) => {
                     <button onClick={props.addPost}>Add post</button>
                 </div>
             </div>
+            <Formik initialValues={{ newPost: props.newPostTextAreaValue}}
+                    validationSchema={Yup.object({
+                        newPost: Yup.string()
+                            .required('Required')
+                    })}
+                    onSubmit={values => {
+                        props.onTextareaChangeHandler(values.newPost);
+                        props.addPost()
+                    }}
+            >
+                {formik => (
+
+                    <form onSubmit={formik.handleSubmit}>
+                        <div>
+                            <textarea
+                                id="newPost" cols={70} rows={3}
+                                placeholder={''}
+                                {...formik.getFieldProps('newPost')}
+                            />
+                        </div>
+                        <button type="submit">Add post</button>
+                    </form>
+                )}
+            </Formik>
             <div className={mod.posts}>
                 {postsElements}
             </div>
