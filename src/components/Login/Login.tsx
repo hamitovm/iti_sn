@@ -14,19 +14,24 @@ import {
 } from "../../redux/users-reducer";
 import {UsersClassComponent} from "../Users/UsersContainer";
 import {login} from "../../redux/auth-reducer";
+import {StateType} from "../../redux/redux-store";
+import {Navigate} from "react-router-dom";
 
 export type FormValues = {
     login: string
     password: string
 }
-export type LoginFormPropsType = {
 
-}
 export type LoginPropsType = {
-
-
+    login: (email: string, password: string, rememberMe: boolean) => void
+    isAuth: boolean
 }
+
 export const Login = (props: LoginPropsType) => {
+    if (props.isAuth) {
+        return <Navigate to={'/profile'}/>
+    }
+
     return (
         <div>
             <h1>Login</h1>
@@ -39,13 +44,21 @@ export const Login = (props: LoginPropsType) => {
                     id: 'password',
                     helpText: "Must be 8-20 characters and cannot contain special characters.",
                     type: 'password'},
-            ]} rememberCheckbox={true}/>
+            ]} rememberCheckbox={true} onSubmitClick={props.login}/>
         </div>
     )
 }
 
-const mstp = () => ({})
+type MapStateToPropsType = {
+    isAuth: boolean
+}
 
-export const LoginContainer = connect( mstp,{
+let mapStateToProps = (state: StateType):MapStateToPropsType => {
+    return {
+        isAuth: state.auth.isAuth
+    }
+}
+
+export const LoginContainer = connect( mapStateToProps,{
     login
 })(Login)

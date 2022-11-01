@@ -54,7 +54,7 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
     }
 
     render() {
-        if (!this.props.isAuth) return <Navigate to={'/login'} />
+        // if (!this.props.isAuth) return <Navigate to={'/login'} />
         return (<>
                 {this.props.isFetching ? <Preloader/> : null}
                 <Users users={this.props.users}

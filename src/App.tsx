@@ -11,7 +11,7 @@ import {UsersContainer} from "./components/Users/UsersContainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Header/HeaderContainer";
 import axios from "axios";
-import {Login} from "./components/Login/Login";
+import {Login, LoginContainer} from "./components/Login/Login";
 
 export function App() {
 
@@ -34,7 +34,7 @@ export function App() {
                     <Route path="/users/*"
                            element={<UsersContainer/>}/>
                     <Route path="/login"
-                           element={<Login/>}/>
+                           element={<LoginContainer/>}/>
                 </Routes>
             </div>
         </div>

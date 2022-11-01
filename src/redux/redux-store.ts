@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore, legacy_createStore as createStore} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
 import {usersReducer} from "./users-reducer";
@@ -26,4 +26,4 @@ export type StateType = ReturnType<ReducersType>
 //applyMiddleware(thunk) - доп. параметр, который в данном случае добавляется для работы thunk'ов
 //applyMiddleware не более чем переопределяет метод dispatch, добавляя перед (или после) обновлением состояния какую-то пользовательскую логику.
 //thunk импортирован из "redux-thunk", поэтому нужно в терминале прописать yarn add redux-thunk, чтобы работало
-export let store = createStore(reducers, applyMiddleware(thunk))
+export let store = legacy_createStore(reducers, applyMiddleware(thunk))

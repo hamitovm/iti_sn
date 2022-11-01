@@ -43,6 +43,7 @@ const TextInputLiveFeedback = ({ label, helpText, ...props }: TextInputLiveFeedb
                 ) : null}
             </div>
             <input
+                autoComplete={'off'}
                 {...props}
                 {...field}
                 placeholder={label}
@@ -62,20 +63,16 @@ const FormEntity = (props: LoginFormPropsType) => {
     // Создает из props.inputsProps объект с ключами из id в props.inputsProps и пустой строкой в качестве значения, использвуется как initialValues
     let objToInit = Object.fromEntries(props.inputsProps.map((_, i) => [props.inputsProps[i].id, '']))
     // Создает из props.inputsProps объект с ключами из id в props.inputsProps и требования для валидации и ошибками в формате Yup для validationSchema
-    let objToValidationSchema = Object.fromEntries(props.inputsProps.map((el, i) => [props.inputsProps[i].id, Yup.string()
+    let objToValidationSchema = Object.fromEntries(props.inputsProps.map((el, i) => [props.inputsProps[i].id,
+        Yup.string()
         .min(8, 'Must be at least 8 characters')
         .max(20, 'Must be less  than 20 characters')
-        .required(`${el.label} is required`)
-        .matches(
-            /^[a-zA-Z0-9]+$/,
-            'Cannot contain special characters or spaces'
-        )]))
+        .required(`${el.label} is required`)]))
 
     const formik = useFormik({
         initialValues: objToInit,
         onSubmit: async (values) => {
-            await sleep(500);
-            alert(JSON.stringify(values, null, 2));
+            props.onSubmitClick(values.login, values.password, values.rememberMe ? true : false)
         },
         validationSchema: Yup.object(objToValidationSchema),
     });
@@ -86,6 +83,7 @@ const FormEntity = (props: LoginFormPropsType) => {
                 {props.inputsProps.map( el => {
                     return (
                         <TextInputLiveFeedback
+                            key={el.id}
                             label={el.label}
                             id={el.id}
                             name={el.id}
@@ -115,6 +113,7 @@ const FormEntity = (props: LoginFormPropsType) => {
 export type LoginFormPropsType = {
     inputsProps: inputPropsType[]
     rememberCheckbox: boolean
+    onSubmitClick: (email: string, password: string, rememberMe: boolean) => void
 }
 
 export type inputPropsType = {

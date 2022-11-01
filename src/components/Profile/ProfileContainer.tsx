@@ -6,6 +6,7 @@ import {getUserProfile, getUserStatus, ProfileType, updateUserStatus} from "../.
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/AuthRedirect";
 import {compose} from "redux";
+import {getAuthUserData} from "../../redux/auth-reducer";
 
 export type ProfileContainerPropsType = {
     userProfile: ProfileType | null
@@ -14,6 +15,7 @@ export type ProfileContainerPropsType = {
     getUserProfile: (userId: string) => void
     getUserStatus: (userId: string) => void
     updateUserStatus: (status: string) => void
+    getAuthUserData: () => void
     router: {
         location: {
             hash: string
@@ -52,6 +54,7 @@ function withRouter(Component: typeof React.Component) {
 
 export class ProfileClassComponent extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
+        this.props.getAuthUserData()
         let userId = this.props.router.params.userId
 
         if (!userId) {
@@ -102,7 +105,8 @@ export const ProfileContainer = compose<React.ComponentType>(connect(mapStateToP
         getUserProfile: getUserProfile,
         getUserStatus: getUserStatus,
         updateUserStatus: updateUserStatus,
+        getAuthUserData
 
     }), withRouter,
-    // withAuthRedirect
+    withAuthRedirect
 )(ProfileClassComponent)
