@@ -114,6 +114,7 @@ export type LoginFormPropsType = {
     inputsProps: inputPropsType[]
     rememberCheckbox: boolean
     onSubmitClick: (email: string, password: string, rememberMe: boolean) => void
+    loginError: string | null
 }
 
 export type inputPropsType = {
@@ -129,6 +130,8 @@ export const LoginForm = (props: LoginFormPropsType) => {
             <div className="border">
                 <FormEntity {...props}/>
             </div>
+            {props.loginError &&
+            <div className={'error'}>{props.loginError}</div>}
         </div>
     )
 }

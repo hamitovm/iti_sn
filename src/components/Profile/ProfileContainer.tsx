@@ -11,6 +11,7 @@ import {getAuthUserData} from "../../redux/auth-reducer";
 export type ProfileContainerPropsType = {
     userProfile: ProfileType | null
     userStatus: string
+    authorisedUserId: number | null
     isAuth: boolean
     getUserProfile: (userId: string) => void
     getUserStatus: (userId: string) => void
@@ -57,8 +58,8 @@ export class ProfileClassComponent extends React.Component<ProfileContainerProps
         this.props.getAuthUserData()
         let userId = this.props.router.params.userId
 
-        if (!userId) {
-            userId = '25445'
+        if (!userId && this.props.authorisedUserId) {
+            userId = this.props.authorisedUserId.toString()
         }
         this.props.getUserProfile(userId)
         this.props.getUserStatus(userId)
@@ -84,6 +85,10 @@ let mapStateToProps = (state: StateType) => {
     return {
         userProfile: state.profilePageData.profile,
         userStatus: state.profilePageData.status,
+        authorisedUserId: state.auth.id,
+        isAuth: state.auth.isAuth
+
+
     }
 }
 //withRouter самописный (выше), добавляет в компонент пропсы, из которых можно получить данные из URL текущей страницы
@@ -108,5 +113,5 @@ export const ProfileContainer = compose<React.ComponentType>(connect(mapStateToP
         getAuthUserData
 
     }), withRouter,
-    withAuthRedirect
+    // withAuthRedirect
 )(ProfileClassComponent)

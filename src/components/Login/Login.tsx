@@ -25,6 +25,7 @@ export type FormValues = {
 export type LoginPropsType = {
     login: (email: string, password: string, rememberMe: boolean) => void
     isAuth: boolean
+    loginError: string | null
 }
 
 export const Login = (props: LoginPropsType) => {
@@ -44,18 +45,20 @@ export const Login = (props: LoginPropsType) => {
                     id: 'password',
                     helpText: "Must be 8-20 characters and cannot contain special characters.",
                     type: 'password'},
-            ]} rememberCheckbox={true} onSubmitClick={props.login}/>
+            ]} rememberCheckbox={true} onSubmitClick={props.login} loginError={props.loginError}/>
         </div>
     )
 }
 
 type MapStateToPropsType = {
     isAuth: boolean
+    loginError: string | null
 }
 
 let mapStateToProps = (state: StateType):MapStateToPropsType => {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        loginError: state.auth.loginError
     }
 }
 

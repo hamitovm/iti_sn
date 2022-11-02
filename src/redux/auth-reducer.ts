@@ -2,22 +2,34 @@ import {Dispatch} from "redux";
 import {authAPI} from "../api/api";
 import {ThunkDispatch} from "redux-thunk";
 import {ReducersType, StateType} from "./redux-store";
+import {
+    AddPostActionType,
+    SetUserProfileACType,
+    SetUserStatusACType,
+    UpdateNewPostTextActionType
+} from "./profile-reducer";
 
 const SET_AUTH_USER_DATA = 'SET_AUTH_USER_DATA'
-export type authReducerActionType = setAuthUserDataActionType
+const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
+
+
+type authReducerActionType = setAuthUserDataActionType | setLoginErrorActionType
+
 
 export type userAuthStateType = {
     id: number | null,
     email: string | null,
     login: string | null
     isAuth: boolean
+    loginError: string | null
 }
 
 let initialState: userAuthStateType = {
     id: null,
     email: null,
     login: null,
-    isAuth: false
+    isAuth: false,
+    loginError: null
 }
 
 export const authReducer = (state: userAuthStateType = initialState, action: authReducerActionType): userAuthStateType => {
@@ -26,35 +38,50 @@ export const authReducer = (state: userAuthStateType = initialState, action: aut
             return {
                 ...state,
                 ...action.data,
-                isAuth: action.isAuth
+                isAuth: action.isAuth,
+                loginError: action.loginError
             }
-
+        case SET_LOGIN_ERROR:
+            return {
+                ...state,
+                loginError: action.loginError
+            }
         default:
             return state
     }
 }
 export type setAuthUserDataActionType = ReturnType<typeof setAuthUserDataAC>
+export type setLoginErrorActionType = {
+    type: 'SET_LOGIN_ERROR',
+    loginError: string
+}
 
 export const setAuthUserDataAC = (userId: number | null,
                                   email: string | null,
                                   login: string | null,
-                                  isAuth: boolean) => ({
+                                  isAuth: boolean,
+                                  loginError: string | null) => ({
     type: SET_AUTH_USER_DATA,
     data: {
         id: userId,
         email,
         login
     },
-    isAuth
+    isAuth,
+    loginError
+})
+
+export const setLoginErrorAC = (errorMessage: string) => ({
+    type: SET_LOGIN_ERROR,
+    loginError: errorMessage
 })
 
 export const getAuthUserData = () => (dispatch: Dispatch<authReducerActionType>) => {
         authAPI.me()
             .then(response => {
                 if (response.data.resultCode === 0) {
-                    console.log(response.data)
                     let {email, id, login} = response.data.data
-                    dispatch(setAuthUserDataAC(id, email, login, true))
+                    dispatch(setAuthUserDataAC(id, email, login, true, null))
                 }
             })
     }
@@ -64,8 +91,10 @@ export const login = (email: string, password: string, rememberMe: boolean) => (
         .then(response => {
             if (response.data.resultCode === 0) {
                 let {email, id, login} = response.data.data
-                dispatch(setAuthUserDataAC(id, email, login, true))
+                dispatch(setAuthUserDataAC(id, email, login, true, null))
                 // dispatch(getAuthUserData())
+            } else {
+                dispatch(setLoginErrorAC(response.data.messages))
             }
         })
 }
@@ -74,7 +103,7 @@ export const logout = () => (dispatch: Dispatch<authReducerActionType>) => {
     authAPI.logout()
         .then(response => {
             if (response.data.resultCode === 0) {
-                dispatch(setAuthUserDataAC(null, null, null, false))
+                dispatch(setAuthUserDataAC(null, null, null, false, null))
             }
         })
 }
