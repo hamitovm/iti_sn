@@ -1,9 +1,8 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import {DialogItem} from "./DialogItem/DialogItem";
 
 import mod from './Dialogs.module.css'
 import {EachMessagePropsType, MessagesPageDataType} from "../../redux/dialogs-reducer";
-import {Navigate} from 'react-router-dom';
 import {Formik} from "formik";
 import * as Yup from "yup";
 // import {StateType} from "../../redux/redux-store";
@@ -11,10 +10,11 @@ import * as Yup from "yup";
 
 export type DialogsPropsType = {
     messagesPageData: MessagesPageDataType
-    // isAuth: boolean
+    isAuth: boolean
     sendMessage: (newMessageBody: string) => void
 }
 export const Dialogs = (props: DialogsPropsType) => {
+    // console.log(props.isAuth)
 
     const dialogItems = props.messagesPageData.dialogs.map((el, index) => {
         return (

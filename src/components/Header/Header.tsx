@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import mod from './Header.module.css'
-import {Navigate, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {HeaderContainerPropsType} from "./HeaderContainer";
 
 export const Header = (props: HeaderContainerPropsType) => {
@@ -11,11 +11,11 @@ export const Header = (props: HeaderContainerPropsType) => {
         props.logout()
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        if (props.authUserData.isAuth) {
-            props.getAuthUserData()
-        }
-    }, [props.authUserData.isAuth])
+    // useEffect(() => {
+    //     if (props.authUserData.isAuth) {
+    //         props.getAuthUserData()
+    //     }
+    // }, [props.authUserData.isAuth])
     return (
         <header className={mod.header}>
             <img

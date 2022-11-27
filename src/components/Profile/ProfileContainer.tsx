@@ -4,7 +4,6 @@ import {StateType} from "../../redux/redux-store";
 import {connect} from "react-redux";
 import {getUserProfile, getUserStatus, ProfileType, updateUserStatus} from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
-import {withAuthRedirect} from "../../hoc/AuthRedirect";
 import {compose} from "redux";
 import {getAuthUserData} from "../../redux/auth-reducer";
 
@@ -36,7 +35,7 @@ export type ProfileContainerPropsType = {
 
 }
 
-function withRouter(Component: typeof React.Component) {
+export const withRouter = (Component: typeof React.Component) => {
     function ComponentWithRouterProp(props: any) {
         let location = useLocation();
         let navigate = useNavigate();
@@ -55,17 +54,24 @@ function withRouter(Component: typeof React.Component) {
 
 export class ProfileClassComponent extends React.Component<ProfileContainerPropsType> {
     componentDidMount() {
-        this.props.getAuthUserData()
+        // this.props.getAuthUserData()
         let userId = this.props.router.params.userId
 
-        if (!userId && this.props.authorisedUserId) {
-            userId = this.props.authorisedUserId.toString()
-        }
+        // if (!userId && this.props.authorisedUserId) {
+        //     userId = this.props.authorisedUserId.toString()
+        // }
+        // Из урока 80
+        // if (!userId) {
+        //     this.props.history.push("/login")
+        // }
         this.props.getUserProfile(userId)
         this.props.getUserStatus(userId)
     }
 
     render() {
+        if (!this.props.isAuth) {
+            return <Navigate to={'/login'}/>
+        }
         //Если пользователь не авторизован - он будет перенаправлен на страницу логина
         // if (!this.props.isAuth) return <Navigate to={'/login'} />
         return (

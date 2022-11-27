@@ -1,19 +1,13 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/api";
 import {ThunkDispatch} from "redux-thunk";
-import {ReducersType, StateType} from "./redux-store";
-import {
-    AddPostActionType,
-    SetUserProfileACType,
-    SetUserStatusACType,
-    UpdateNewPostTextActionType
-} from "./profile-reducer";
+import {StateType} from "./redux-store";
 
 const SET_AUTH_USER_DATA = 'SET_AUTH_USER_DATA'
 const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
 
 
-type authReducerActionType = setAuthUserDataActionType | setLoginErrorActionType
+export type authReducerActionType = setAuthUserDataActionType | setLoginErrorActionType
 
 
 export type userAuthStateType = {
@@ -77,10 +71,11 @@ export const setLoginErrorAC = (errorMessage: string) => ({
 })
 
 export const getAuthUserData = () => (dispatch: Dispatch<authReducerActionType>) => {
-        authAPI.me()
+        return authAPI.me()
             .then(response => {
                 if (response.data.resultCode === 0) {
                     let {email, id, login} = response.data.data
+                    console.log('is Auth from reducer - true')
                     dispatch(setAuthUserDataAC(id, email, login, true, null))
                 }
             })

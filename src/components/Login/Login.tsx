@@ -1,18 +1,6 @@
-import * as Yup from 'yup';
-import {Formik, FormikProps, useField} from 'formik';
-import mod from '../common/Login.module.css'
 import React from "react";
 import {LoginForm} from "../common/LoginForm";
 import {connect} from "react-redux";
-import {
-    changeIsFetchingValueAC, changeIsFollowingProgressAC,
-    follow, getUsersThunkCreator,
-    setCurrentPageAC,
-    setTotalUsersCountAC,
-    setUsersAC,
-    unfollow
-} from "../../redux/users-reducer";
-import {UsersClassComponent} from "../Users/UsersContainer";
 import {login} from "../../redux/auth-reducer";
 import {StateType} from "../../redux/redux-store";
 import {Navigate} from "react-router-dom";
@@ -29,6 +17,7 @@ export type LoginPropsType = {
 }
 
 export const Login = (props: LoginPropsType) => {
+    console.log(props.isAuth, ' - is Auth from login')
     if (props.isAuth) {
         return <Navigate to={'/profile'}/>
     }

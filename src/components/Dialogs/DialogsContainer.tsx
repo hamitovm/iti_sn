@@ -1,21 +1,18 @@
 import React from 'react';
-import {Dialogs, DialogsPropsType} from "./Dialogs";
+import {Dialogs} from "./Dialogs";
 import {sendMessageCreator} from "../../redux/dialogs-reducer";
-import {ActionsType, StoreContext} from "../../StoreContext";
+import {ActionsType} from "../../StoreContext";
 import {connect} from "react-redux";
 import {StateType} from "../../redux/redux-store";
-import {ProfileClassComponent} from "../Profile/ProfileContainer";
-import {Navigate} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/AuthRedirect";
 import {compose} from "redux";
 
 
-
-type PropsType = {
+// type PropsType = {
     // store: StoreType
     // messagesPageData: MessagesPageDataType
     // dispatch: (action: ActionsType) => void
-}
+// }
 // export const DialogsContainer = (props: PropsType) => {
 //     return (
 //         <StoreContext.Consumer>
@@ -62,5 +59,5 @@ let mapDispatchToProps = (dispatch: (action: ActionsType) => void ) => {
 // export const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
 
 // export const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
-export const SuperDialogsContainer = compose<React.ComponentType>(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs)
+export const SuperDialogsContainer = compose<React.ComponentType>(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps),)(Dialogs)
 

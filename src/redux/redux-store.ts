@@ -1,12 +1,10 @@
-import {applyMiddleware, combineReducers, legacy_createStore, legacy_createStore as createStore} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
 import {usersReducer} from "./users-reducer";
 import {authReducer} from "./auth-reducer";
 import thunk from "redux-thunk";
-
-
-
+import {appReducer} from "./app-reducer";
 
 
 // Сборка редьюсеров, в объекте в качестве ключа указана часть стейта для соответствующего редьюсера.
@@ -15,7 +13,8 @@ let reducers = combineReducers({
     profilePageData: profileReducer,
     messagesPageData: dialogsReducer,
     usersPageData: usersReducer,
-    auth: authReducer
+    auth: authReducer,
+    app: appReducer
 })
 
 export type ReducersType = typeof reducers
