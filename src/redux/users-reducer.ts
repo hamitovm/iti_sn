@@ -155,12 +155,13 @@ export const changeIsFollowingProgressAC = (isFetchingData: boolean, userId: num
 }
 
 //thunk - функция, которая внутри себя диспатчит другие экшны, это функция, которая оборачивает выражение, чтобы отложить его вычисление.
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+export const getUsersThunkCreator = (page: number, pageSize: number) => {
 
     return (dispatch: Dispatch<usersReducerActionType>) => {
         //changeIsFetchingValue ставится true в момент начала загрузки данных и перед сетом возвращается false
         dispatch(changeIsFetchingValueAC(true))
-        usersAPI.getUsers(currentPage, pageSize)
+        dispatch(setCurrentPageAC(page))
+        usersAPI.getUsers(page, pageSize)
             .then(data => {
             dispatch(changeIsFetchingValueAC(false))
             dispatch(setUsersAC(data.items))

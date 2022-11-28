@@ -13,6 +13,14 @@ import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../common/preloader";
 import {Navigate} from "react-router-dom";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers
+} from "../../redux/users-selectors";
 
 
 type UsersClassComponentPropsType = {
@@ -49,7 +57,7 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
     // Реагирование на изменение номера страницы, отображение данных соответственно номеру страницы
     onPageNumberClickHandler = (pageNumber: number) => {
         this.props.changeIsFetchingValue(true)
-        this.props.setCurrentPage(pageNumber)
+        // this.props.setCurrentPage(pageNumber)
         this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
     }
 
@@ -76,12 +84,12 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
 
 let mapStateToProps = (state: StateType) => {
     return {
-        users: state.usersPageData.users,
-        pageSize: state.usersPageData.pageSize,
-        totalUsersCount: state.usersPageData.totalUsersCount,
-        currentPage: state.usersPageData.currentPage,
-        isFetching: state.usersPageData.isFetching,
-        followingInProgress: state.usersPageData.followingInProgress,
+        users: getUsers(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
         isAuth: state.auth.isAuth
     }
 }
