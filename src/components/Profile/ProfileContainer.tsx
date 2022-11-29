@@ -57,9 +57,9 @@ export class ProfileClassComponent extends React.Component<ProfileContainerProps
         // this.props.getAuthUserData()
         let userId = this.props.router.params.userId
 
-        // if (!userId && this.props.authorisedUserId) {
-        //     userId = this.props.authorisedUserId.toString()
-        // }
+        if (!userId && this.props.authorisedUserId) {
+            userId = this.props.authorisedUserId.toString()
+        }
         // Из урока 80
         // if (!userId) {
         //     this.props.history.push("/login")
