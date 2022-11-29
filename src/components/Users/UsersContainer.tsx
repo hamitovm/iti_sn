@@ -18,8 +18,7 @@ import {
     getFollowingInProgress,
     getIsFetching,
     getPageSize,
-    getTotalUsersCount,
-    getUsers
+    getTotalUsersCount, getUsers
 } from "../../redux/users-selectors";
 
 
@@ -57,7 +56,7 @@ export class UsersClassComponent extends React.Component<UsersClassComponentProp
     // Реагирование на изменение номера страницы, отображение данных соответственно номеру страницы
     onPageNumberClickHandler = (pageNumber: number) => {
         this.props.changeIsFetchingValue(true)
-        // this.props.setCurrentPage(pageNumber)
+        this.props.setCurrentPage(pageNumber)
         this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
     }
 
