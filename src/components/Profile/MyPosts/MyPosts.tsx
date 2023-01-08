@@ -14,6 +14,7 @@ type MyPostsProps = {
 
 export const MyPosts = (props: MyPostsProps) => {
 
+
     let postsElements = props.postsCommentsData.map((el, index) => <Post key={index} message={el.message}
                                                                 likesCount={el.likesCount}/>)
 

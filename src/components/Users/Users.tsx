@@ -5,6 +5,8 @@ import React from "react";
 import {Navigate, NavLink} from "react-router-dom";
 import axios from "axios";
 import {usersAPI} from "../../api/api";
+import {Pagination} from "../common/Pagination/Pagination";
+import {User} from "./User";
 
 type UsersPropsType = {
     users: Array<UserType>,
@@ -21,70 +23,18 @@ type UsersPropsType = {
 }
 
 export const Users = (props: UsersPropsType) => {
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
-    let pages = [1, props.currentPage - 1, props.currentPage, props.currentPage + 1, pagesCount]
-    //Условия для отображения корректного набора страниц
-    if (props.currentPage < 4) {
-        pages = [1, 2, 3, 4, pagesCount]
-    }
-    if (props.currentPage > pagesCount - 2) {
-        pages = [1, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount]
-    }
-
 
     return (
         <div>
-            <div className={mod.page__numbers}>
-                {
-                    pages.map(el => {
-                            return (
-                                <span onClick={() => props.onPageNumberClickHandler(el)}
-                                      className={props.currentPage === el ? mod.selected__page : mod.page__numbers}>
-                               {el === pagesCount && props.currentPage < pagesCount - 2 && ' ... '}
-                                    {el}
-                                    {el === 1 && props.currentPage > 3 && ' ... '}
-                           </span>)
-                        }
-                    )}
-            </div>
+            <Pagination currentPage={props.currentPage}
+                        pageSize={props.pageSize}
+                        onPageNumberClickHandler={props.onPageNumberClickHandler}
+                        totalUsersCount={props.totalUsersCount}/>
             {
-                props.users.map(el => (
-                    <div key={el.id}>
-                        <span>
-                            <div>
-                                <NavLink to={"/profile/" + el.id}>
-                                    <img className={mod.user__avatar}
-                                         src={el.photos.small !== null ? el.photos.small : default_user_photo} alt=""/>
-                                </NavLink>
-
-                            </div>
-                            <div>
-                                {el.followed ?
-                                    <button disabled={props.followingInProgress.some(id => id === el.id)} onClick={() => {
-                                        props.unfollowUser(el.id)
-                                    }}>Unfollow</button> :
-                                    <button disabled={props.followingInProgress.some(id => id === el.id)} onClick={() => {
-                                        props.followUser(el.id)
-                                    }}>Follow</button>}
-                            </div>
-                        </span>
-                        <span>
-                            <span>
-                                <div>
-                                    {el.name}
-                                </div>
-                                <div>
-                                    {el.status}
-                                </div>
-                            </span>
-                            <span>
-                                <div>{'el.location.country'}</div>
-                                <div>{'el.location.city'}</div>
-                            </span>
-                        </span>
-                    </div>
-                ))
-
+                props.users.map(el => <User user={el}
+                                            followUser={props.followUser}
+                                            unfollowUser={props.unfollowUser}
+                                            followingInProgress={props.followingInProgress}/>)
             }
         </div>
     )

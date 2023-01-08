@@ -12,15 +12,15 @@ export type ProfileInfoPropsType = {
 }
 
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
-    if (!props.userProfile) {
+export const ProfileInfo = ({userProfile, status, updateUserStatus, ...props}: ProfileInfoPropsType) => {
+    if (!userProfile) {
         return <Preloader/>
     }
     return (<div>
             <div className={mod.content_background}>
             </div>
-            <img src={props.userProfile.photos.large ? props.userProfile.photos.large : ''} alt=""/>
-            <ProfileStatusWithHooks status={props.status} updateUserStatus={props.updateUserStatus}/>
+            <img src={userProfile.photos.large ? userProfile.photos.large : ''} alt=""/>
+            <ProfileStatusWithHooks status={status} updateUserStatus={updateUserStatus}/>
         </div>
 
     )

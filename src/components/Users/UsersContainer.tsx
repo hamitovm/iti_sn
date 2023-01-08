@@ -42,22 +42,20 @@ type UsersClassComponentPropsType = {
 }
 
 export class UsersClassComponent extends React.Component<UsersClassComponentPropsType> {
-
-
-
-
     //componentDidMount() вызывается сразу после монтирования компонента (вставлено в DOM-дерево).
     // Инициализация, требующая DOM-узлов, должна быть здесь. Если вам нужно загружать данные с удалённой конечной точки (endpoint),
     // это хорошее место для создания экземпляра сетевого запроса.
 
     componentDidMount() {
-        this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
+        let {currentPage, pageSize} = this.props
+        this.props.getUsersThunkCreator(currentPage, pageSize)
     }
     // Реагирование на изменение номера страницы, отображение данных соответственно номеру страницы
     onPageNumberClickHandler = (pageNumber: number) => {
+        const {pageSize} = this.props
         this.props.changeIsFetchingValue(true)
         this.props.setCurrentPage(pageNumber)
-        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
+        this.props.getUsersThunkCreator(pageNumber, pageSize)
     }
 
     render() {
